@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(lidar_imu_init)
-
+#ros2_humble , debian10测试
 SET(CMAKE_BUILD_TYPE "Release")
 
 ADD_COMPILE_OPTIONS(-std=c++14 )
