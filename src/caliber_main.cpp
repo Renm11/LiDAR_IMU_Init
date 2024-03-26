@@ -49,7 +49,7 @@
 // #include <livox_ros_driver/msg/CustomMsg.h>
 #include "preprocess.h"
 #include <ikd-Tree/ikd_Tree.h>
-#include <LI_init/LI_init.h>
+#include "LI_init/LI_init.h"
 
 #ifndef DEPLOY
 #include "matplotlibcpp.h"
@@ -765,15 +765,16 @@ int main(int argc, char **argv) {
     auto nh = rclcpp::Node::make_shared("my_node");
 
         // 加载YAML文件
-    YAML::Node yaml_node = YAML::LoadFile("/path/to/params.yaml");
+    // YAML::Node yaml_node = YAML::LoadFile("/path/to/params.yaml");
 
-    // 将YAML中的键值对设置到参数服务器中
-    for (const auto& param : yaml_node)
-    {
-        std::string key = param.first.as<std::string>();
-        rclcpp::ParameterValue value = rclcpp::ParameterValue(param.second.as<std::string>());
-        nh->set_parameter(rclcpp::Parameter(key, value));
-    }
+    // // 将YAML中的键值对设置到参数服务器中
+    // for (const auto& param : yaml_node)
+    // {
+    //     std::string key = param.first.as<std::string>();
+    //     rclcpp::ParameterValue value = rclcpp::ParameterValue(param.second.as<std::string>());
+    //     nh->set_parameter(rclcpp::Parameter(key, value));
+    // }
+    
 
     nh.param<int>("max_iteration", NUM_MAX_ITERATIONS, 4);
     nh.param<int>("point_filter_num", p_pre->point_filter_num, 2);
@@ -919,10 +920,6 @@ int main(int argc, char **argv) {
 
             p_imu->Process(Measures, state, feats_undistort);
             state_propagat = state;
-
-
-
-
 
             /*** Segment the map in lidar FOV ***/
             lasermap_fov_segment();
