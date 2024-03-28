@@ -360,7 +360,7 @@ void standard_pcl_cbk(const sensor_msgs::PointCloud2::ConstPtr &msg) {
         printf("Self sync IMU and LiDAR, HARD time lag is %.10lf \n \n", timediff_imu_wrt_lidar);
     }
 
-    if ((lidar_type == VELO || lidar_type == OUSTER || lidar_type == PANDAR || lidar_type == ROBOSENSE) && cut_frame) {
+    if ((lidar_type == VELO || lidar_type == OUSTER || lidar_type == PANDAR || lidar_type == ROBOSENSE) && cut_frame) { // 是否需要切分为多帧
         deque<PointCloudXYZI::Ptr> ptr;
         deque<double> timestamp_lidar;
         p_pre->process_cut_frame_pcl2(msg, ptr, timestamp_lidar, cut_frame_num, scan_count);
@@ -764,6 +764,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "laserMapping");
     ros::NodeHandle nh;
 
+
     nh.param<int>("max_iteration", NUM_MAX_ITERATIONS, 4);
     nh.param<int>("point_filter_num", p_pre->point_filter_num, 2);
     nh.param<string>("map_file_path", map_file_path, "");
@@ -891,7 +892,7 @@ int main(int argc, char **argv) {
     while (status) {
         if (flg_exit) break;
         ros::spinOnce();
-        if (sync_packages(Measures)) {
+        if (sync_packages(Measures)) { //对同步好的数据进行处理
             if (flg_reset) {
                 ROS_WARN("reset when rosbag play back.");
                 p_imu->Reset();
@@ -900,23 +901,21 @@ int main(int argc, char **argv) {
             }
 
 
-            if (feats_undistort->empty() || (feats_undistort == NULL)) {
+            if (feats_undistort->empty() || (feats_undistort == NULL)) { 
                 first_lidar_time = Measures.lidar_beg_time;
                 p_imu->first_lidar_time = first_lidar_time;
                 ROS_WARN("LI-Init not ready, no points stored.");
             }
 
-            p_imu->Process(Measures, state, feats_undistort);
+            p_imu->Process(Measures, state, feats_undistort);// 对IMU数据进行处理，包括IMU数据的积分和对齐，以及对点云数据去畸变;对feats_undistort进行赋值 
             state_propagat = state;
 
 
 
-
-
             /*** Segment the map in lidar FOV ***/
-            lasermap_fov_segment();
+            lasermap_fov_segment(); //将地图分割成视野内和视野外两部分
 
-            /*** downsample the feature points in a scan ***/
+            /*** downsample the feature points in a scan ***/  //对点云数据进行下采样
             downSizeFilterSurf.setInputCloud(feats_undistort);
             downSizeFilterSurf.filter(*feats_down_body);
             feats_down_size = feats_down_body->points.size();
@@ -936,28 +935,28 @@ int main(int argc, char **argv) {
             kdtree_size_st = ikdtree.size();
 
 
-            /*** ICP and iterated Kalman filter update ***/
-            normvec->resize(feats_down_size);
-            feats_down_world->resize(feats_down_size);
-            euler_cur = RotMtoEuler(state.rot_end);
+            /*** ICP and iterated Kalman filter update ***/   //哪里进行了ICP？在循环中进行了ICP
+            normvec->resize(feats_down_size); //对法向量进行resize
+            feats_down_world->resize(feats_down_size); //对点云数据进行resize
+            euler_cur = RotMtoEuler(state.rot_end); //将旋转矩阵转换为欧拉角
 
 
-            pointSearchInd_surf.resize(feats_down_size);
-            Nearest_Points.resize(feats_down_size);
-            int rematch_num = 0;
-            bool nearest_search_en = true;
+            pointSearchInd_surf.resize(feats_down_size); //对搜索到的点进行resize
+            Nearest_Points.resize(feats_down_size); //对最近的点进行resize
+            int rematch_num = 0; //重新匹配的点的数量
+            bool nearest_search_en = true; //是否进行最近点搜索 
 
 
             /*** iterated state estimation ***/
             std::vector<M3D> body_var;
             std::vector<M3D> crossmat_list;
-            body_var.reserve(feats_down_size);
-            crossmat_list.reserve(feats_down_size);
+            body_var.reserve(feats_down_size); //对点云数据的方差进行reserve
+            crossmat_list.reserve(feats_down_size); //对叉乘矩阵进行reserve
 
 
 
 
-            for (iterCount = 0; iterCount < NUM_MAX_ITERATIONS; iterCount++) {
+            for (iterCount = 0; iterCount < NUM_MAX_ITERATIONS; iterCount++) {  
 
                 laserCloudOri->clear();
                 corr_normvect->clear();

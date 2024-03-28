@@ -39,7 +39,8 @@
 #include <Python.h>
 #include <Eigen/Core>
 #include <nav_msgs/msg/odometry.hpp>
-#include <nav_msgs/Path.h>
+// #include <nav_msgs/Path.h>
+#include <nav_msgs/msg/path.hpp>
 #include <algorithm>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/filters/voxel_grid.h>
@@ -762,53 +763,43 @@ void printProgress(double percentage) {
 
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
-    auto nh = rclcpp::Node::make_shared("my_node");
-
-        // 加载YAML文件
-    // YAML::Node yaml_node = YAML::LoadFile("/path/to/params.yaml");
-
-    // // 将YAML中的键值对设置到参数服务器中
-    // for (const auto& param : yaml_node)
-    // {
-    //     std::string key = param.first.as<std::string>();
-    //     rclcpp::ParameterValue value = rclcpp::ParameterValue(param.second.as<std::string>());
-    //     nh->set_parameter(rclcpp::Parameter(key, value));
-    // }
+    auto nh = rclcpp::Node::make_shared("laserMapping");
     
-
-    nh.param<int>("max_iteration", NUM_MAX_ITERATIONS, 4);
-    nh.param<int>("point_filter_num", p_pre->point_filter_num, 2);
-    nh.param<string>("map_file_path", map_file_path, "");
-    nh.param<string>("common/lid_topic", lid_topic, "/livox/lidar");
-    nh.param<string>("common/imu_topic", imu_topic, "/livox/imu");
-    nh.param<double>("mapping/filter_size_surf", filter_size_surf_min, 0.5);
-    nh.param<double>("mapping/filter_size_map", filter_size_map_min, 0.5);
-    nh.param<double>("cube_side_length", cube_len, 200);
-    nh.param<float>("mapping/det_range", DET_RANGE, 300.f);
-    nh.param<double>("mapping/gyr_cov", gyr_cov, 0.1);
-    nh.param<double>("mapping/acc_cov", acc_cov, 0.1);
-    nh.param<double>("mapping/grav_cov", grav_cov, 0.001);
-    nh.param<double>("mapping/b_gyr_cov", b_gyr_cov, 0.0001);
-    nh.param<double>("mapping/b_acc_cov", b_acc_cov, 0.0001);
-    nh.param<double>("preprocess/blind", p_pre->blind, 1.0);
-    nh.param<int>("preprocess/lidar_type", lidar_type, AVIA);
-    nh.param<int>("preprocess/scan_line", p_pre->N_SCANS, 16);
-    nh.param<bool>("preprocess/feature_extract_en", p_pre->feature_enabled, 0);
-    nh.param<bool>("initialization/cut_frame", cut_frame, true);
-    nh.param<int>("initialization/cut_frame_num", cut_frame_num, 1);
-    nh.param<int>("initialization/orig_odom_freq", orig_odom_freq, 10);
-    nh.param<double>("initialization/online_refine_time", online_refine_time, 20.0);
-    nh.param<double>("initialization/mean_acc_norm", mean_acc_norm, 9.81);
-    nh.param<double>("initialization/data_accum_length", Init_LI->data_accum_length, 300);
-    nh.param<vector<double>>("initialization/Rot_LI_cov", Rot_LI_cov, vector<double>());
-    nh.param<vector<double>>("initialization/Trans_LI_cov", Trans_LI_cov, vector<double>());
-    nh.param<bool>("publish/path_en", path_en, true);
-    nh.param<bool>("publish/scan_publish_en", scan_pub_en, 1);
-    nh.param<bool>("publish/dense_publish_en", dense_pub_en, 1);
-    nh.param<bool>("publish/scan_bodyframe_pub_en", scan_body_pub_en, 1);
-    nh.param<bool>("runtime_pos_log_enable", runtime_pos_log, 0);
-    nh.param<bool>("pcd_save/pcd_save_en", pcd_save_en, false);
-    nh.param<int>("pcd_save/interval", pcd_save_interval, -1);
+    auto yaml = YAML::LoadFile("/path/to/params.yaml");
+    
+    NUM_MAX_ITERATIONS = yaml["max_iteration"].as<int>;
+    p_pre->point_filter_num = yaml["point_filter_num"].as<int>;
+    map_file_path = yaml["map_file_path"].as<string>;
+    lid_topic = yaml["common/lid_topic"].as<string>;
+    imu_topic = yaml["common/imu_topic"].as<string>;
+    filter_size_surf_min = yaml["mapping/filter_size_surf"].as<double>;
+    filter_size_map_min = yaml["mapping/filter_size_map"].as<double>;
+    cube_len = yaml["cube_side_length"].as<double>;
+    DET_RANGE = yaml["mapping/det_range"].as<float>;
+    gyr_cov = yaml["mapping/gyr_cov"].as<double>;
+    acc_cov = yaml["mapping/acc_cov"].as<double>;
+    grav_cov = yaml["mapping/grav_cov"].as<double>;
+    b_gyr_cov = yaml["mapping/b_gyr_cov"].as<double>;
+    b_acc_cov = yaml["mapping/b_acc_cov"].as<double>;
+    p_pre->blind = yaml["preprocess/blind"].as<double>;
+    lidar_type = yaml["preprocess/lidar_type"].as<int>;
+    p_pre->N_SCANS = yaml["preprocess/scan_line"].as<int>;
+    p_pre->feature_enabled = yaml["preprocess/feature_extract_en"].as<bool>;
+    cut_frame = yaml["initialization/cut_frame"].as<bool>;
+    cut_frame_num = yaml["initialization/cut_frame_num"].as<int>;
+    orig_odom_freq = yaml["initialization/orig_odom_freq"].as<int>;
+    online_refine_time = yaml["initialization/online_refine_time"].as<double>;
+    mean_acc_norm = yaml["initialization/mean_acc_norm"].as<double>;
+    Init_LI->data_accum_length = yaml["initialization/data_accum_length"].as<double>;
+    Rot_LI_cov = yaml["initialization/Rot_LI_cov"].as<vector<double>>;
+    Trans_LI_cov = yaml["initialization/Trans_LI_cov"].as<vector<double>>;
+    path_en = yaml["publish/path_en"].as<bool>;
+    scan_pub_en = yaml["publish/scan_publish_en"].as<bool>;
+    dense_pub_en = yaml["publish/dense_publish_en"].as<bool>;
+    scan_body_pub_en = yaml["publish/scan_bodyframe_pub_en"].as<bool>;
+    runtime_pos_log = yaml["runtime_pos_log_enable"].as<bool>;
+    pcd_save_en = yaml["pcd_save/pcd_save_en"].as<bool>;
+    pcd_save_interval = yaml["pcd_save/interval"].as<int>;
 
     cout << "lidar_type: " << lidar_type << endl;
     cout << "LiDAR-only odometry starts." << endl;
@@ -897,7 +888,8 @@ int main(int argc, char **argv) {
 
 //------------------------------------------------------------------------------------------------------
     signal(SIGINT, SigHandle);
-    ros::Rate rate(5000);
+    // ros::Rate rate(5000);
+    
     bool status = ros::ok();
 
     while (status) {

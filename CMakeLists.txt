@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.8)
 project(lidar_imu_init)
 #ros2_humble , debian10测试
 SET(CMAKE_BUILD_TYPE "Release")
@@ -42,19 +42,27 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}   ${OpenMP_C_FLAGS}")
 find_package(PythonLibs REQUIRED)
 find_path(MATPLOTLIB_CPP_INCLUDE_DIRS "matplotlibcpp.h")
 
-find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  nav_msgs
-  sensor_msgs
-  roscpp
-  rospy
-  std_msgs
-  pcl_ros
-  tf
-  livox_ros_driver
-  message_generation
-  eigen_conversions
-)
+find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(roscpp REQUIRED)
+find_package(rospy REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(pcl_ros REQUIRED)
+find_package(tf REQUIRED)
+find_package(livox_ros_driver REQUIRED)
+# find_package(message_generation REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Pose6D.msg"
+  "msg/States.msg"
+  DEPENDENCIES sensor_msgs geometry_msgs
+ )
+
+find_package(eigen_conversions REQUIRED)
+
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.8 REQUIRED)
@@ -62,11 +70,11 @@ find_package(Ceres REQUIRED)
 
 message(Eigen: ${EIGEN3_INCLUDE_DIR})
 
-add_message_files(
-  FILES
-  Pose6D.msg
-  States.msg
-)
+# add_message_files(
+#   FILES
+#   Pose6D.msg
+#   States.msg
+# )
 
 include_directories(
      ../../devel/include
@@ -76,16 +84,16 @@ include_directories(
   ${PYTHON_INCLUDE_DIRS}
   include)
 
-generate_messages(
- DEPENDENCIES
- geometry_msgs
-)
+# generate_messages(
+#  DEPENDENCIES
+#  geometry_msgs
+# )
 
-catkin_package(
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs message_runtime
-  DEPENDS EIGEN3 PCL
-  INCLUDE_DIRS
-)
+# catkin_package(
+#   CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs message_runtime
+#   DEPENDS EIGEN3 PCL
+#   INCLUDE_DIRS
+# )
 
 add_executable(li_init
         src/laserMapping.cpp
