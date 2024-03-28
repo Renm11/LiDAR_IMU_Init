@@ -1,7 +1,0 @@
-{
-  "package_name": "lidar_imu_init",
-  "non_idl_tuples": [
-    "/home/mw/work/LiDAR_IMU_Init:msg/Pose6D.msg",
-    "/home/mw/work/LiDAR_IMU_Init:msg/States.msg"
-  ]
-}
