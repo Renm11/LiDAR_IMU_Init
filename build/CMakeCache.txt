@@ -34,6 +34,11 @@ AMENT_CMAKE_UNINSTALL_TARGET:BOOL=ON
 //The path where test results are generated
 AMENT_TEST_RESULTS_DIR:PATH=/home/mw/work/LiDAR_IMU_Init/build/test_results
 
+//Global flag to cause add_library() to create shared libraries
+// if on. If set to true, this will cause all libraries to be built
+// shared unless the library was explicitly added as a static library.
+BUILD_SHARED_LIBS:BOOL=ON
+
 //Build the testing tree.
 BUILD_TESTING:BOOL=ON
 
@@ -307,6 +312,21 @@ FREETYPE_LIBRARY_DEBUG:FILEPATH=FREETYPE_LIBRARY_DEBUG-NOTFOUND
 //Path to a library.
 FREETYPE_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libfreetype.so
 
+//Path to a library.
+FastCDR_LIBRARY_DEBUG:FILEPATH=FastCDR_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+FastCDR_LIBRARY_RELEASE:FILEPATH=/opt/ros2_humble/install/fastcdr/lib/libfastcdr.so
+
+//Path to a file.
+FastRTPS_INCLUDE_DIR:PATH=/opt/ros2_humble/install/fastrtps/include
+
+//Path to a library.
+FastRTPS_LIBRARY_DEBUG:FILEPATH=FastRTPS_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+FastRTPS_LIBRARY_RELEASE:FILEPATH=/opt/ros2_humble/install/fastrtps/lib/libfastrtps.so
+
 //The directory containing a CMake configuration file for Fontconfig.
 Fontconfig_DIR:PATH=Fontconfig_DIR-NOTFOUND
 
@@ -366,6 +386,15 @@ OPENNI_INCLUDE_DIR:PATH=/usr/include/ni
 
 //Path to a library.
 OPENNI_LIBRARY:FILEPATH=/usr/lib/libOpenNI.so
+
+//Path to a library.
+OPENSSL_CRYPTO_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libcrypto.so
+
+//Path to a file.
+OPENSSL_INCLUDE_DIR:PATH=/usr/include
+
+//Path to a library.
+OPENSSL_SSL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libssl.so
 
 //CXX compiler flags for OpenMP parallelization
 OpenMP_CXX_FLAGS:STRING=-fopenmp
@@ -541,6 +570,9 @@ PCL_TRACKING_LIBRARY_DEBUG:FILEPATH=/usr/lib/libpcl_tracking.so
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
 
+//Path to a program.
+PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3
+
 //Path to a file.
 PYTHON_INCLUDE_DIR:PATH=/usr/include/python3.7m
 
@@ -568,6 +600,9 @@ QHULL_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libqhull.so
 
 //Name of the computer/site where compile is being run
 SITE:STRING=mw
+
+//The directory containing a CMake configuration file for TinyXML2.
+TinyXML2_DIR:PATH=TinyXML2_DIR-NOTFOUND
 
 //Path to a file.
 USB_10_INCLUDE_DIR:PATH=/usr/include
@@ -810,7 +845,13 @@ X11_xkbfile_INCLUDE_PATH:PATH=X11_xkbfile_INCLUDE_PATH-NOTFOUND
 X11_xkbfile_LIB:FILEPATH=X11_xkbfile_LIB-NOTFOUND
 
 //Path to a library.
-_lib:FILEPATH=/opt/ros2_humble/install/sensor_msgs/lib/libsensor_msgs__rosidl_typesupport_fastrtps_cpp.so
+_lib:FILEPATH=/opt/ros2_humble/install/tf2_msgs/lib/libtf2_msgs__rosidl_typesupport_fastrtps_cpp.so
+
+//Path to a file.
+_numpy_h:FILEPATH=/usr/include/python3.7m/numpy/numpyconfig.h
+
+//The directory containing a CMake configuration file for action_msgs.
+action_msgs_DIR:PATH=/opt/ros2_humble/install/action_msgs/share/action_msgs/cmake
 
 //The directory containing a CMake configuration file for ament_cmake.
 ament_cmake_DIR:PATH=/opt/ros2_humble/install/ament_cmake/share/ament_cmake/cmake
@@ -842,14 +883,26 @@ ament_cmake_export_targets_DIR:PATH=/opt/ros2_humble/install/ament_cmake_export_
 //The directory containing a CMake configuration file for ament_cmake_gen_version_h.
 ament_cmake_gen_version_h_DIR:PATH=/opt/ros2_humble/install/ament_cmake_gen_version_h/share/ament_cmake_gen_version_h/cmake
 
+//The directory containing a CMake configuration file for ament_cmake_gmock.
+ament_cmake_gmock_DIR:PATH=/opt/ros2_humble/install/ament_cmake_gmock/share/ament_cmake_gmock/cmake
+
+//The directory containing a CMake configuration file for ament_cmake_gtest.
+ament_cmake_gtest_DIR:PATH=/opt/ros2_humble/install/ament_cmake_gtest/share/ament_cmake_gtest/cmake
+
 //The directory containing a CMake configuration file for ament_cmake_include_directories.
 ament_cmake_include_directories_DIR:PATH=/opt/ros2_humble/install/ament_cmake_include_directories/share/ament_cmake_include_directories/cmake
 
 //The directory containing a CMake configuration file for ament_cmake_libraries.
 ament_cmake_libraries_DIR:PATH=/opt/ros2_humble/install/ament_cmake_libraries/share/ament_cmake_libraries/cmake
 
+//The directory containing a CMake configuration file for ament_cmake_pytest.
+ament_cmake_pytest_DIR:PATH=/opt/ros2_humble/install/ament_cmake_pytest/share/ament_cmake_pytest/cmake
+
 //The directory containing a CMake configuration file for ament_cmake_python.
 ament_cmake_python_DIR:PATH=/opt/ros2_humble/install/ament_cmake_python/share/ament_cmake_python/cmake
+
+//The directory containing a CMake configuration file for ament_cmake_ros.
+ament_cmake_ros_DIR:PATH=/opt/ros2_humble/install/ament_cmake_ros/share/ament_cmake_ros/cmake
 
 //The directory containing a CMake configuration file for ament_cmake_target_dependencies.
 ament_cmake_target_dependencies_DIR:PATH=/opt/ros2_humble/install/ament_cmake_target_dependencies/share/ament_cmake_target_dependencies/cmake
@@ -860,17 +913,41 @@ ament_cmake_test_DIR:PATH=/opt/ros2_humble/install/ament_cmake_test/share/ament_
 //The directory containing a CMake configuration file for ament_cmake_version.
 ament_cmake_version_DIR:PATH=/opt/ros2_humble/install/ament_cmake_version/share/ament_cmake_version/cmake
 
+//The directory containing a CMake configuration file for ament_index_cpp.
+ament_index_cpp_DIR:PATH=/opt/ros2_humble/install/ament_index_cpp/share/ament_index_cpp/cmake
+
 //The directory containing a CMake configuration file for builtin_interfaces.
 builtin_interfaces_DIR:PATH=/opt/ros2_humble/install/builtin_interfaces/share/builtin_interfaces/cmake
 
 //The directory containing a CMake configuration file for catkin.
 catkin_DIR:PATH=catkin_DIR-NOTFOUND
 
+//The directory containing a CMake configuration file for class_loader.
+class_loader_DIR:PATH=/opt/ros2_humble/install/class_loader/share/class_loader/cmake
+
+//The directory containing a CMake configuration file for composition_interfaces.
+composition_interfaces_DIR:PATH=/opt/ros2_humble/install/composition_interfaces/share/composition_interfaces/cmake
+
+//The directory containing a CMake configuration file for console_bridge.
+console_bridge_DIR:PATH=/opt/ros2_humble/install/console_bridge_vendor/lib/console_bridge/cmake
+
+//The directory containing a CMake configuration file for eigen3_cmake_module.
+eigen3_cmake_module_DIR:PATH=/opt/ros2_humble/install/eigen3_cmake_module/share/eigen3_cmake_module/cmake
+
+//The directory containing a CMake configuration file for eigen_conversions.
+eigen_conversions_DIR:PATH=eigen_conversions_DIR-NOTFOUND
+
 //The directory containing a CMake configuration file for fastcdr.
 fastcdr_DIR:PATH=/opt/ros2_humble/install/fastcdr/lib/cmake/fastcdr
 
+//The directory containing a CMake configuration file for fastrtps.
+fastrtps_DIR:PATH=/opt/ros2_humble/install/fastrtps/share/fastrtps/cmake
+
 //The directory containing a CMake configuration file for fastrtps_cmake_module.
 fastrtps_cmake_module_DIR:PATH=/opt/ros2_humble/install/fastrtps_cmake_module/share/fastrtps_cmake_module/cmake
+
+//The directory containing a CMake configuration file for foonathan_memory.
+foonathan_memory_DIR:PATH=/opt/ros2_humble/install/foonathan_memory_vendor/lib/foonathan_memory/cmake
 
 //The directory containing a CMake configuration file for freetype.
 freetype_DIR:PATH=freetype_DIR-NOTFOUND
@@ -878,14 +955,74 @@ freetype_DIR:PATH=freetype_DIR-NOTFOUND
 //The directory containing a CMake configuration file for geometry_msgs.
 geometry_msgs_DIR:PATH=/opt/ros2_humble/install/geometry_msgs/share/geometry_msgs/cmake
 
+//The directory containing a CMake configuration file for libstatistics_collector.
+libstatistics_collector_DIR:PATH=/opt/ros2_humble/install/libstatistics_collector/share/libstatistics_collector/cmake
+
+//The directory containing a CMake configuration file for libyaml_vendor.
+libyaml_vendor_DIR:PATH=/opt/ros2_humble/install/libyaml_vendor/share/libyaml_vendor/cmake
+
 //Value Computed by CMake
 lidar_imu_init_BINARY_DIR:STATIC=/home/mw/work/LiDAR_IMU_Init/build
 
 //Value Computed by CMake
 lidar_imu_init_SOURCE_DIR:STATIC=/home/mw/work/LiDAR_IMU_Init
 
+//Dependencies for the target
+lidar_imu_init__rosidl_generator_c_LIB_DEPENDS:STATIC=general;sensor_msgs::sensor_msgs__rosidl_generator_c;general;builtin_interfaces::builtin_interfaces__rosidl_generator_c;general;geometry_msgs::geometry_msgs__rosidl_generator_c;general;std_msgs::std_msgs__rosidl_generator_c;general;rosidl_runtime_c::rosidl_runtime_c;general;rcutils::rcutils;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_generator_py_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_c;general;/usr/lib/x86_64-linux-gnu/libpython3.7m.so;general;lidar_imu_init__rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_generator_py;general;builtin_interfaces::builtin_interfaces__rosidl_generator_py;general;geometry_msgs::geometry_msgs__rosidl_generator_py;general;std_msgs::std_msgs__rosidl_generator_py;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_c_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_c;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_c::rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_c;general;std_msgs::std_msgs__rosidl_typesupport_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_c__pyext_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_py;general;/usr/lib/x86_64-linux-gnu/libpython3.7m.so;general;lidar_imu_init__rosidl_typesupport_c;general;lidar_imu_init__rosidl_typesupport_c;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_c::rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_generator_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_cpp;general;sensor_msgs::sensor_msgs__rosidl_generator_py;general;builtin_interfaces::builtin_interfaces__rosidl_generator_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_generator_py;general;geometry_msgs::geometry_msgs__rosidl_generator_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_cpp;general;geometry_msgs::geometry_msgs__rosidl_generator_py;general;std_msgs::std_msgs__rosidl_generator_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_cpp;general;std_msgs::std_msgs__rosidl_typesupport_introspection_c;general;std_msgs::std_msgs__rosidl_typesupport_c;general;std_msgs::std_msgs__rosidl_typesupport_introspection_cpp;general;std_msgs::std_msgs__rosidl_typesupport_cpp;general;std_msgs::std_msgs__rosidl_generator_py;general;rosidl_runtime_c::rosidl_runtime_c;general;/opt/ros2_humble/install/rmw/lib/librmw.so;general;rcutils::rcutils;general;rosidl_runtime_c::rosidl_runtime_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_cpp_LIB_DEPENDS:STATIC=general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_cpp::rosidl_typesupport_cpp;general;rosidl_typesupport_c::rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_cpp;general;std_msgs::std_msgs__rosidl_typesupport_cpp;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_fastrtps_c_LIB_DEPENDS:STATIC=general;fastcdr;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_fastrtps_cpp::rosidl_typesupport_fastrtps_cpp;general;rosidl_typesupport_fastrtps_c::rosidl_typesupport_fastrtps_c;general;lidar_imu_init__rosidl_generator_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_fastrtps_c__pyext_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_py;general;/usr/lib/x86_64-linux-gnu/libpython3.7m.so;general;lidar_imu_init__rosidl_typesupport_fastrtps_c;general;lidar_imu_init__rosidl_typesupport_c;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_c::rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_generator_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_cpp;general;sensor_msgs::sensor_msgs__rosidl_generator_py;general;builtin_interfaces::builtin_interfaces__rosidl_generator_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_generator_py;general;geometry_msgs::geometry_msgs__rosidl_generator_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_cpp;general;geometry_msgs::geometry_msgs__rosidl_generator_py;general;std_msgs::std_msgs__rosidl_generator_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_cpp;general;std_msgs::std_msgs__rosidl_typesupport_introspection_c;general;std_msgs::std_msgs__rosidl_typesupport_c;general;std_msgs::std_msgs__rosidl_typesupport_introspection_cpp;general;std_msgs::std_msgs__rosidl_typesupport_cpp;general;std_msgs::std_msgs__rosidl_generator_py;general;rosidl_runtime_c::rosidl_runtime_c;general;/opt/ros2_humble/install/rmw/lib/librmw.so;general;rcutils::rcutils;general;rosidl_runtime_c::rosidl_runtime_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_fastrtps_cpp_LIB_DEPENDS:STATIC=general;fastcdr;general;rmw::rmw;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_fastrtps_cpp::rosidl_typesupport_fastrtps_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_cpp;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_cpp;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_introspection_c_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_c;general;rosidl_typesupport_introspection_c::rosidl_typesupport_introspection_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_c;general;std_msgs::std_msgs__rosidl_typesupport_introspection_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_introspection_c__pyext_LIB_DEPENDS:STATIC=general;lidar_imu_init__rosidl_generator_py;general;/usr/lib/x86_64-linux-gnu/libpython3.7m.so;general;lidar_imu_init__rosidl_typesupport_introspection_c;general;lidar_imu_init__rosidl_typesupport_c;general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_c::rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_generator_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_fastrtps_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_c;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_cpp;general;sensor_msgs::sensor_msgs__rosidl_generator_py;general;builtin_interfaces::builtin_interfaces__rosidl_generator_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_c;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_fastrtps_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_generator_py;general;geometry_msgs::geometry_msgs__rosidl_generator_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_c;general;geometry_msgs::geometry_msgs__rosidl_typesupport_fastrtps_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_cpp;general;geometry_msgs::geometry_msgs__rosidl_generator_py;general;std_msgs::std_msgs__rosidl_generator_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_c;general;std_msgs::std_msgs__rosidl_typesupport_fastrtps_cpp;general;std_msgs::std_msgs__rosidl_typesupport_introspection_c;general;std_msgs::std_msgs__rosidl_typesupport_c;general;std_msgs::std_msgs__rosidl_typesupport_introspection_cpp;general;std_msgs::std_msgs__rosidl_typesupport_cpp;general;std_msgs::std_msgs__rosidl_generator_py;general;rosidl_runtime_c::rosidl_runtime_c;general;/opt/ros2_humble/install/rmw/lib/librmw.so;general;rcutils::rcutils;general;rosidl_runtime_c::rosidl_runtime_c;
+
+//Dependencies for the target
+lidar_imu_init__rosidl_typesupport_introspection_cpp_LIB_DEPENDS:STATIC=general;rosidl_runtime_c::rosidl_runtime_c;general;rosidl_typesupport_introspection_cpp::rosidl_typesupport_introspection_cpp;general;sensor_msgs::sensor_msgs__rosidl_typesupport_introspection_cpp;general;builtin_interfaces::builtin_interfaces__rosidl_typesupport_introspection_cpp;general;geometry_msgs::geometry_msgs__rosidl_typesupport_introspection_cpp;general;std_msgs::std_msgs__rosidl_typesupport_introspection_cpp;
+
+//The directory containing a CMake configuration file for livox_ros_driver.
+livox_ros_driver_DIR:PATH=livox_ros_driver_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for message_filters.
+message_filters_DIR:PATH=/opt/ros2_humble/install/message_filters/share/message_filters/cmake
+
 //The directory containing a CMake configuration file for nav_msgs.
 nav_msgs_DIR:PATH=/opt/ros2_humble/install/nav_msgs/share/nav_msgs/cmake
+
+//The directory containing a CMake configuration file for orocos_kdl.
+orocos_kdl_DIR:PATH=/opt/ros2_humble/install/orocos_kdl_vendor/share/orocos_kdl/cmake
+
+//The directory containing a CMake configuration file for orocos_kdl_vendor.
+orocos_kdl_vendor_DIR:PATH=/opt/ros2_humble/install/orocos_kdl_vendor/share/orocos_kdl_vendor/cmake
+
+//The directory containing a CMake configuration file for pcl_conversions.
+pcl_conversions_DIR:PATH=/home/mw/core_ws_humble/install/pcl_conversions/share/pcl_conversions/cmake
+
+//The directory containing a CMake configuration file for pcl_msgs.
+pcl_msgs_DIR:PATH=/home/mw/core_ws_humble/install/pcl_msgs/share/pcl_msgs/cmake
+
+//The directory containing a CMake configuration file for pcl_ros.
+pcl_ros_DIR:PATH=/home/mw/core_ws_humble/install/pcl_ros/share/pcl_ros/cmake
 
 //Path to a library.
 pkgcfg_lib_FLANN_flann:FILEPATH=/usr/lib/x86_64-linux-gnu/libflann.so
@@ -905,6 +1042,42 @@ pkgcfg_lib_PC_OPENNI_OpenNI:FILEPATH=/usr/lib/libOpenNI.so
 //Path to a library.
 pkgcfg_lib_PC_USB_10_usb-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libusb-1.0.so
 
+//Path to a library.
+pkgcfg_lib__OPENSSL_crypto:FILEPATH=/usr/lib/x86_64-linux-gnu/libcrypto.so
+
+//Path to a library.
+pkgcfg_lib__OPENSSL_ssl:FILEPATH=/usr/lib/x86_64-linux-gnu/libssl.so
+
+//The directory containing a CMake configuration file for python_cmake_module.
+python_cmake_module_DIR:PATH=/opt/ros2_humble/install/python_cmake_module/share/python_cmake_module/cmake
+
+//The directory containing a CMake configuration file for rcl.
+rcl_DIR:PATH=/opt/ros2_humble/install/rcl/share/rcl/cmake
+
+//The directory containing a CMake configuration file for rcl_action.
+rcl_action_DIR:PATH=/opt/ros2_humble/install/rcl_action/share/rcl_action/cmake
+
+//The directory containing a CMake configuration file for rcl_interfaces.
+rcl_interfaces_DIR:PATH=/opt/ros2_humble/install/rcl_interfaces/share/rcl_interfaces/cmake
+
+//The directory containing a CMake configuration file for rcl_logging_interface.
+rcl_logging_interface_DIR:PATH=/opt/ros2_humble/install/rcl_logging_interface/share/rcl_logging_interface/cmake
+
+//The directory containing a CMake configuration file for rcl_logging_spdlog.
+rcl_logging_spdlog_DIR:PATH=/opt/ros2_humble/install/rcl_logging_spdlog/share/rcl_logging_spdlog/cmake
+
+//The directory containing a CMake configuration file for rcl_yaml_param_parser.
+rcl_yaml_param_parser_DIR:PATH=/opt/ros2_humble/install/rcl_yaml_param_parser/share/rcl_yaml_param_parser/cmake
+
+//The directory containing a CMake configuration file for rclcpp.
+rclcpp_DIR:PATH=/opt/ros2_humble/install/rclcpp/share/rclcpp/cmake
+
+//The directory containing a CMake configuration file for rclcpp_action.
+rclcpp_action_DIR:PATH=/opt/ros2_humble/install/rclcpp_action/share/rclcpp_action/cmake
+
+//The directory containing a CMake configuration file for rclcpp_components.
+rclcpp_components_DIR:PATH=/opt/ros2_humble/install/rclcpp_components/share/rclcpp_components/cmake
+
 //The directory containing a CMake configuration file for rcpputils.
 rcpputils_DIR:PATH=/opt/ros2_humble/install/rcpputils/share/rcpputils/cmake
 
@@ -914,14 +1087,35 @@ rcutils_DIR:PATH=/opt/ros2_humble/install/rcutils/share/rcutils/cmake
 //The directory containing a CMake configuration file for rmw.
 rmw_DIR:PATH=/opt/ros2_humble/install/rmw/share/rmw/cmake
 
+//The directory containing a CMake configuration file for rmw_dds_common.
+rmw_dds_common_DIR:PATH=/opt/ros2_humble/install/rmw_dds_common/share/rmw_dds_common/cmake
+
+//The directory containing a CMake configuration file for rmw_fastrtps_cpp.
+rmw_fastrtps_cpp_DIR:PATH=/opt/ros2_humble/install/rmw_fastrtps_cpp/share/rmw_fastrtps_cpp/cmake
+
+//The directory containing a CMake configuration file for rmw_fastrtps_shared_cpp.
+rmw_fastrtps_shared_cpp_DIR:PATH=/opt/ros2_humble/install/rmw_fastrtps_shared_cpp/share/rmw_fastrtps_shared_cpp/cmake
+
+//The directory containing a CMake configuration file for rmw_implementation.
+rmw_implementation_DIR:PATH=/opt/ros2_humble/install/rmw_implementation/share/rmw_implementation/cmake
+
+//The directory containing a CMake configuration file for rmw_implementation_cmake.
+rmw_implementation_cmake_DIR:PATH=/opt/ros2_humble/install/rmw_implementation_cmake/share/rmw_implementation_cmake/cmake
+
 //The directory containing a CMake configuration file for roscpp.
 roscpp_DIR:PATH=roscpp_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for rosgraph_msgs.
+rosgraph_msgs_DIR:PATH=/opt/ros2_humble/install/rosgraph_msgs/share/rosgraph_msgs/cmake
 
 //The directory containing a CMake configuration file for rosidl_adapter.
 rosidl_adapter_DIR:PATH=/opt/ros2_humble/install/rosidl_adapter/share/rosidl_adapter/cmake
 
 //The directory containing a CMake configuration file for rosidl_cmake.
 rosidl_cmake_DIR:PATH=/opt/ros2_humble/install/rosidl_cmake/share/rosidl_cmake/cmake
+
+//The directory containing a CMake configuration file for rosidl_default_generators.
+rosidl_default_generators_DIR:PATH=/opt/ros2_humble/install/rosidl_default_generators/share/rosidl_default_generators/cmake
 
 //The directory containing a CMake configuration file for rosidl_default_runtime.
 rosidl_default_runtime_DIR:PATH=/opt/ros2_humble/install/rosidl_default_runtime/share/rosidl_default_runtime/cmake
@@ -931,6 +1125,9 @@ rosidl_generator_c_DIR:PATH=/opt/ros2_humble/install/rosidl_generator_c/share/ro
 
 //The directory containing a CMake configuration file for rosidl_generator_cpp.
 rosidl_generator_cpp_DIR:PATH=/opt/ros2_humble/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake
+
+//The directory containing a CMake configuration file for rosidl_generator_py.
+rosidl_generator_py_DIR:PATH=/opt/ros2_humble/install/rosidl_generator_py/share/rosidl_generator_py/cmake
 
 //The directory containing a CMake configuration file for rosidl_runtime_c.
 rosidl_runtime_c_DIR:PATH=/opt/ros2_humble/install/rosidl_runtime_c/share/rosidl_runtime_c/cmake
@@ -962,8 +1159,38 @@ rosidl_typesupport_introspection_cpp_DIR:PATH=/opt/ros2_humble/install/rosidl_ty
 //The directory containing a CMake configuration file for sensor_msgs.
 sensor_msgs_DIR:PATH=/opt/ros2_humble/install/sensor_msgs/share/sensor_msgs/cmake
 
+//The directory containing a CMake configuration file for spdlog.
+spdlog_DIR:PATH=/opt/ros2_humble/install/spdlog_vendor/lib/cmake/spdlog
+
+//The directory containing a CMake configuration file for spdlog_vendor.
+spdlog_vendor_DIR:PATH=/opt/ros2_humble/install/spdlog_vendor/share/spdlog_vendor/cmake
+
+//The directory containing a CMake configuration file for statistics_msgs.
+statistics_msgs_DIR:PATH=/opt/ros2_humble/install/statistics_msgs/share/statistics_msgs/cmake
+
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros2_humble/install/std_msgs/share/std_msgs/cmake
+
+//The directory containing a CMake configuration file for tf2.
+tf2_DIR:PATH=/opt/ros2_humble/install/tf2/share/tf2/cmake
+
+//The directory containing a CMake configuration file for tf2_geometry_msgs.
+tf2_geometry_msgs_DIR:PATH=/opt/ros2_humble/install/tf2_geometry_msgs/share/tf2_geometry_msgs/cmake
+
+//The directory containing a CMake configuration file for tf2_msgs.
+tf2_msgs_DIR:PATH=/opt/ros2_humble/install/tf2_msgs/share/tf2_msgs/cmake
+
+//The directory containing a CMake configuration file for tf2_ros.
+tf2_ros_DIR:PATH=/opt/ros2_humble/install/tf2_ros/share/tf2_ros/cmake
+
+//The directory containing a CMake configuration file for tracetools.
+tracetools_DIR:PATH=/opt/ros2_humble/install/tracetools/share/tracetools/cmake
+
+//The directory containing a CMake configuration file for unique_identifier_msgs.
+unique_identifier_msgs_DIR:PATH=/opt/ros2_humble/install/unique_identifier_msgs/share/unique_identifier_msgs/cmake
+
+//The directory containing a CMake configuration file for yaml.
+yaml_DIR:PATH=/opt/ros2_humble/install/libyaml_vendor/cmake
 
 
 ########################
@@ -1122,7 +1349,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1169,12 +1396,18 @@ EIGEN_INCLUDE_DIR-ADVANCED:INTERNAL=1
 Eigen3_DIR-ADVANCED:INTERNAL=1
 //Details about finding Eigen
 FIND_PACKAGE_MESSAGE_DETAILS_Eigen:INTERNAL=[/usr/local/eigen337/include/eigen3][v()]
+//Details about finding Eigen3
+FIND_PACKAGE_MESSAGE_DETAILS_Eigen3:INTERNAL=[1][v3.3.7()]
+//Details about finding FastRTPS
+FIND_PACKAGE_MESSAGE_DETAILS_FastRTPS:INTERNAL=[/opt/ros2_humble/install/fastrtps/include][/opt/ros2_humble/install/fastrtps/lib/libfastrtps.so;/opt/ros2_humble/install/fastcdr/lib/libfastcdr.so][v()]
 //Details about finding OpenGL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libOpenGL.so][/usr/lib/x86_64-linux-gnu/libGLX.so][/usr/include][cfound components:  OpenGL GLX ][v()]
 //Details about finding OpenNI
 FIND_PACKAGE_MESSAGE_DETAILS_OpenNI:INTERNAL=[/usr/lib/libOpenNI.so][/usr/include/ni][v()]
 //Details about finding OpenNI2
 FIND_PACKAGE_MESSAGE_DETAILS_OpenNI2:INTERNAL=[/usr/lib/libOpenNI2.so][/usr/include/openni2][v()]
+//Details about finding OpenSSL
+FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libcrypto.so][/usr/include][c ][v1.1.1n()]
 //Details about finding PCL
 FIND_PACKAGE_MESSAGE_DETAILS_PCL:INTERNAL=[pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;/usr/lib/x86_64-linux-gnu/libboost_system.so;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;/usr/lib/x86_64-linux-gnu/libboost_thread.so;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;/usr/lib/x86_64-linux-gnu/libboost_iostreams.so;/usr/lib/x86_64-linux-gnu/libboost_serialization.so;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;/usr/lib/x86_64-linux-gnu/libboost_regex.so;optimized;/usr/lib/x86_64-linux-gnu/libqhull.so;debug;/usr/lib/x86_64-linux-gnu/libqhull.so;/usr/lib/libOpenNI.so;/usr/lib/libOpenNI2.so;lz4;flann;flann_cpp;VTK::WrappingTools;VTK::ViewsContext2D;VTK::loguru;VTK::TestingRendering;VTK::TestingCore;VTK::vtksys;VTK::ViewsInfovis;VTK::CommonColor;VTK::RenderingVolumeOpenGL2;VTK::glew;VTK::opengl;VTK::RenderingLabel;VTK::octree;VTK::RenderingLOD;VTK::RenderingLICOpenGL2;VTK::RenderingImage;VTK::RenderingContextOpenGL2;VTK::RenderingCellGrid;VTK::IOVeraOut;VTK::hdf5;VTK::IOTecplotTable;VTK::utf8;VTK::IOSegY;VTK::IOParallelXML;VTK::IOPLY;VTK::IOOggTheora;VTK::theora;VTK::ogg;VTK::IONetCDF;VTK::netcdf;VTK::libproj;VTK::IOMotionFX;VTK::pegtl;VTK::IOParallel;VTK::jsoncpp;VTK::IOMINC;VTK::IOLSDyna;VTK::IOInfovis;VTK::libxml2;VTK::zlib;VTK::IOImport;VTK::IOIOSS;VTK::fmt;VTK::ioss;VTK::cgns;VTK::exodusII;VTK::IOFLUENTCFF;VTK::IOVideo;VTK::IOMovie;VTK::IOExportPDF;VTK::libharu;VTK::IOExportGL2PS;VTK::RenderingGL2PSOpenGL2;VTK::gl2ps;VTK::png;VTK::IOExport;VTK::RenderingVtkJS;VTK::nlohmannjson;VTK::RenderingSceneGraph;VTK::IOExodus;VTK::IOEnSight;VTK::IOCityGML;VTK::pugixml;VTK::IOChemistry;VTK::IOCesium3DTiles;VTK::IOGeometry;VTK::IOCellGrid;VTK::IOCONVERGECFD;VTK::IOHDF;VTK::IOCGNSReader;VTK::IOAsynchronous;VTK::IOAMR;VTK::InteractionImage;VTK::ImagingStencil;VTK::ImagingStatistics;VTK::ImagingMorphological;VTK::ImagingMath;VTK::ImagingFourier;VTK::IOSQL;VTK::sqlite;VTK::GeovisCore;VTK::InfovisLayout;VTK::ViewsCore;VTK::InteractionWidgets;VTK::RenderingVolume;VTK::RenderingAnnotation;VTK::ImagingHybrid;VTK::ImagingColor;VTK::InteractionStyle;VTK::FiltersTopology;VTK::FiltersTensor;VTK::FiltersSelection;VTK::FiltersSMP;VTK::FiltersReduction;VTK::FiltersProgrammable;VTK::FiltersPoints;VTK::FiltersParallelImaging;VTK::FiltersImaging;VTK::ImagingGeneral;VTK::FiltersGeometryPreview;VTK::FiltersGeneric;VTK::FiltersFlowPaths;VTK::eigen;VTK::FiltersDSP;VTK::FiltersCellGrid;VTK::FiltersAMR;VTK::FiltersParallel;VTK::FiltersTexture;VTK::FiltersModeling;VTK::DomainsChemistryOpenGL2;VTK::RenderingOpenGL2;VTK::RenderingHyperTreeGrid;VTK::RenderingUI;VTK::FiltersHybrid;VTK::DomainsChemistry;VTK::ChartsCore;VTK::InfovisCore;VTK::FiltersExtraction;VTK::ParallelDIY;VTK::diy2;VTK::IOXML;VTK::IOXMLParser;VTK::expat;VTK::ParallelCore;VTK::IOLegacy;VTK::IOCore;VTK::doubleconversion;VTK::lz4;VTK::lzma;VTK::fast_float;VTK::FiltersStatistics;VTK::FiltersHyperTree;VTK::ImagingSources;VTK::IOImage;VTK::DICOMParser;VTK::jpeg;VTK::metaio;VTK::tiff;VTK::RenderingContext2D;VTK::RenderingFreeType;VTK::freetype;VTK::kwiml;VTK::RenderingCore;VTK::FiltersSources;VTK::ImagingCore;VTK::FiltersGeneral;VTK::FiltersVerdict;VTK::verdict;VTK::FiltersGeometry;VTK::CommonComputationalGeometry;VTK::FiltersCore;VTK::CommonImplicitArrays;VTK::CommonExecutionModel;VTK::CommonDataModel;VTK::CommonSystem;VTK::CommonMisc;VTK::exprtk;VTK::CommonTransforms;VTK::CommonMath;VTK::kissfft;VTK::CommonCore][/usr/include/pcl-1.9;/usr/local/eigen337/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2][v(1.8)]
 //Details about finding PCL_2D
@@ -1215,8 +1448,12 @@ FIND_PACKAGE_MESSAGE_DETAILS_PCL_SURFACE:INTERNAL=[/usr/lib/libpcl_surface.so][/
 FIND_PACKAGE_MESSAGE_DETAILS_PCL_TRACKING:INTERNAL=[/usr/lib/libpcl_tracking.so][/usr/include/pcl-1.9][v()]
 //Details about finding Python3
 FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.7][cfound components:  Interpreter ][v3.7.3()]
+//Details about finding PythonExtra
+FIND_PACKAGE_MESSAGE_DETAILS_PythonExtra:INTERNAL=[.so][/usr/include/python3.7m][/usr/lib/x86_64-linux-gnu/libpython3.7m.so][cpython-37m-x86_64-linux-gnu][.cpython-37m-x86_64-linux-gnu][v()]
+//Details about finding PythonInterp
+FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python3][v3.7.3(3.6)]
 //Details about finding PythonLibs
-FIND_PACKAGE_MESSAGE_DETAILS_PythonLibs:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpython3.7m.so][/usr/include/python3.7m][v3.7.3()]
+FIND_PACKAGE_MESSAGE_DETAILS_PythonLibs:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpython3.7m.so][/usr/include/python3.7m][v3.7.3(3.5)]
 //Details about finding Qhull
 FIND_PACKAGE_MESSAGE_DETAILS_Qhull:INTERNAL=[optimized;/usr/lib/x86_64-linux-gnu/libqhull.so;debug;/usr/lib/x86_64-linux-gnu/libqhull.so][/usr/include][v()]
 //Details about finding Threads
@@ -1289,6 +1526,12 @@ OPENGL_glx_LIBRARY-ADVANCED:INTERNAL=1
 OPENGL_opengl_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_xmesa_INCLUDE_DIR
 OPENGL_xmesa_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENSSL_CRYPTO_LIBRARY
+OPENSSL_CRYPTO_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENSSL_INCLUDE_DIR
+OPENSSL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENSSL_SSL_LIBRARY
+OPENSSL_SSL_LIBRARY-ADVANCED:INTERNAL=1
 //Result of TRY_COMPILE
 OpenMP_COMPILE_RESULT_CXX_fopenmp:INTERNAL=TRUE
 //Result of TRY_COMPILE
@@ -1551,18 +1794,28 @@ PC_USB_10_libusb-1.0_PREFIX:INTERNAL=
 PC_USB_10_libusb-1.0_VERSION:INTERNAL=
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PYTHON_EXECUTABLE
+PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PYTHON_INCLUDE_DIR
 PYTHON_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//The directory for Python library installation. This needs to
+// be in PYTHONPATH when 'setup.py install' is called.
+PYTHON_INSTALL_DIR:INTERNAL=lib/python3.7/site-packages
 //ADVANCED property for variable: PYTHON_LIBRARY
 PYTHON_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PYTHON_LIBRARY_DEBUG
 PYTHON_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//The SOABI suffix for Python native extensions. See PEP-3149:
+// https://www.python.org/dev/peps/pep-3149/.
+PYTHON_SOABI:INTERNAL=cpython-37m-x86_64-linux-gnu
 //ADVANCED property for variable: ProcessorCount_cmd_getconf
 ProcessorCount_cmd_getconf-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ProcessorCount_cmd_sysctl
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Python3_EXECUTABLE
 Python3_EXECUTABLE-ADVANCED:INTERNAL=1
+//The full suffix for Python native extensions. See PEP-3149: https://www.python.org/dev/peps/pep-3149/.
+PythonExtra_EXTENSION_SUFFIX:INTERNAL=.cpython-37m-x86_64-linux-gnu
 //QHull header
 QHULL_HEADER:INTERNAL=/usr/include/libqhull/libqhull.h
 //Number of processors available to run parallel tests.
@@ -1727,15 +1980,51 @@ _Boost_LIBRARY_DIR_RELEASE_LAST:INTERNAL=/usr/lib/x86_64-linux-gnu
 _Boost_NAMESPACE_LAST:INTERNAL=boost
 //Last used Boost_USE_MULTITHREADED value.
 _Boost_USE_MULTITHREADED_LAST:INTERNAL=TRUE
+_OPENSSL_CFLAGS:INTERNAL=
+_OPENSSL_CFLAGS_I:INTERNAL=
+_OPENSSL_CFLAGS_OTHER:INTERNAL=
+_OPENSSL_FOUND:INTERNAL=1
+_OPENSSL_INCLUDEDIR:INTERNAL=/usr/include
+_OPENSSL_INCLUDE_DIRS:INTERNAL=
+_OPENSSL_LDFLAGS:INTERNAL=-lssl;-lcrypto
+_OPENSSL_LDFLAGS_OTHER:INTERNAL=
+_OPENSSL_LIBDIR:INTERNAL=/usr/lib/x86_64-linux-gnu
+_OPENSSL_LIBRARIES:INTERNAL=ssl;crypto
+_OPENSSL_LIBRARY_DIRS:INTERNAL=
+_OPENSSL_LIBS:INTERNAL=
+_OPENSSL_LIBS_L:INTERNAL=
+_OPENSSL_LIBS_OTHER:INTERNAL=
+_OPENSSL_LIBS_PATHS:INTERNAL=
+_OPENSSL_PREFIX:INTERNAL=/usr
+_OPENSSL_STATIC_CFLAGS:INTERNAL=
+_OPENSSL_STATIC_CFLAGS_I:INTERNAL=
+_OPENSSL_STATIC_CFLAGS_OTHER:INTERNAL=
+_OPENSSL_STATIC_INCLUDE_DIRS:INTERNAL=
+_OPENSSL_STATIC_LDFLAGS:INTERNAL=-lssl;-lcrypto;-ldl;-pthread
+_OPENSSL_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread
+_OPENSSL_STATIC_LIBDIR:INTERNAL=
+_OPENSSL_STATIC_LIBRARIES:INTERNAL=ssl;crypto;dl
+_OPENSSL_STATIC_LIBRARY_DIRS:INTERNAL=
+_OPENSSL_STATIC_LIBS:INTERNAL=
+_OPENSSL_STATIC_LIBS_L:INTERNAL=
+_OPENSSL_STATIC_LIBS_OTHER:INTERNAL=
+_OPENSSL_STATIC_LIBS_PATHS:INTERNAL=
+_OPENSSL_VERSION:INTERNAL=1.1.1n
+_OPENSSL_openssl_INCLUDEDIR:INTERNAL=
+_OPENSSL_openssl_LIBDIR:INTERNAL=
+_OPENSSL_openssl_PREFIX:INTERNAL=
+_OPENSSL_openssl_VERSION:INTERNAL=
 __pkg_config_arguments_FLANN:INTERNAL=flann
 __pkg_config_arguments_PC_EIGEN:INTERNAL=eigen3
 __pkg_config_arguments_PC_OPENNI:INTERNAL=QUIET;libopenni
 __pkg_config_arguments_PC_OPENNI2:INTERNAL=QUIET;libopenni2
 __pkg_config_arguments_PC_USB_10:INTERNAL=libusb-1.0
+__pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl
 __pkg_config_checked_FLANN:INTERNAL=1
 __pkg_config_checked_PC_EIGEN:INTERNAL=1
 __pkg_config_checked_PC_OPENNI:INTERNAL=1
 __pkg_config_checked_PC_OPENNI2:INTERNAL=1
 __pkg_config_checked_PC_USB_10:INTERNAL=1
-prefix_result:INTERNAL=/usr/lib
+__pkg_config_checked__OPENSSL:INTERNAL=1
+prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu
 

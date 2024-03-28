@@ -39,61 +39,41 @@ find_package(OpenMP QUIET)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}   ${OpenMP_C_FLAGS}")
 
-find_package(PythonLibs REQUIRED)
-find_path(MATPLOTLIB_CPP_INCLUDE_DIRS "matplotlibcpp.h")
+# find_package(PythonLibs REQUIRED)
+# find_path(MATPLOTLIB_CPP_INCLUDE_DIRS "matplotlibcpp.h")
 
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(roscpp REQUIRED)
-find_package(rospy REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(pcl_ros REQUIRED)
-find_package(tf REQUIRED)
-find_package(livox_ros_driver REQUIRED)
-# find_package(message_generation REQUIRED)
-find_package(builtin_interfaces REQUIRED)
+find_package(tf2 REQUIRED)
+
 find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pose6D.msg"
   "msg/States.msg"
-  DEPENDENCIES sensor_msgs geometry_msgs
+   DEPENDENCIES sensor_msgs geometry_msgs
  )
 
-find_package(eigen_conversions REQUIRED)
+# find_package(eigen_conversions REQUIRED)  # 没有这个包
 
 
 find_package(Eigen3 REQUIRED)
-find_package(PCL 1.8 REQUIRED)
+find_package(pcl_conversions REQUIRED)
+find_package(pcl_ros REQUIRED)
 find_package(Ceres REQUIRED)
 
 message(Eigen: ${EIGEN3_INCLUDE_DIR})
-
-# add_message_files(
-#   FILES
-#   Pose6D.msg
-#   States.msg
-# )
-
 include_directories(
      ../../devel/include
-	${catkin_INCLUDE_DIRS} 
+	# ${catkin_INCLUDE_DIRS} 
   ${EIGEN3_INCLUDE_DIR}
   ${PCL_INCLUDE_DIRS}
   ${PYTHON_INCLUDE_DIRS}
   include)
-
-# generate_messages(
-#  DEPENDENCIES
-#  geometry_msgs
-# )
-
-# catkin_package(
-#   CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs message_runtime
-#   DEPENDS EIGEN3 PCL
-#   INCLUDE_DIRS
-# )
 
 add_executable(li_init
         src/laserMapping.cpp
