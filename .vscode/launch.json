@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       // "program": "${workspaceFolder}/build/main_ceres_test",
-      "program": "${workspaceFolder}/build/eskf_node",
+      "program": "${workspaceFolder}/build/li_init",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",

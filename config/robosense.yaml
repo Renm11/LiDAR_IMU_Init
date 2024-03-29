@@ -1,3 +1,9 @@
+point_filter_num : 3
+max_iteration : 5
+cube_side_length : 2000
+
+
+
 common:
     lid_topic:  "/rslidar_points"
     imu_topic:  "/imu/data"
