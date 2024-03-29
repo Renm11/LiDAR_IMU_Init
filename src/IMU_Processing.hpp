@@ -8,7 +8,8 @@
 #include <thread>
 #include <fstream>
 #include <csignal>
-#include <ros/ros.h>
+#include <iostream>
+#include <rclcpp/rclcpp.hpp>
 #include <so3_math.h>
 #include <Eigen/Eigen>
 #include <common_lib.h>
@@ -16,16 +17,22 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <condition_variable>
-#include <nav_msgs/Odometry.h>
+#include <nav_msgs/msg/odometry.h>
 #include <pcl/common/transforms.h>
 #include <pcl/kdtree/kdtree_flann.h>
-#include <tf/transform_broadcaster.h>
-#include <eigen_conversions/eigen_msg.h>
+// #include <tf/transform_broadcaster.h>
+
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_ros/transform_listener.h>
+
+// #include <eigen_conversions/eigen_msg.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <sensor_msgs/Imu.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <lidar_imu_init/States.h>
-#include <geometry_msgs/Vector3.h>
+#include <sensor_msgs/msg/imu.h>
+#include <sensor_msgs/msg/point_cloud2.h>
+#include "lidar_imu_init/msg/states.hpp"
+#include <geometry_msgs/msg/vector3.h>
+#include <rclcpp/rclcpp.hpp>
+// #include <logging.h>
 
 /// *************Preconfiguration
 
@@ -43,7 +50,7 @@ class ImuProcess
   ~ImuProcess();
   
   void Reset();
-  void Reset(double start_timestamp, const sensor_msgs::ImuConstPtr &lastimu);
+  void Reset(double start_timestamp, const sensor_msgs::msg::Imu::SharedPtr &lastimu);
   void set_R_LI_cov(const V3D &R_LI_cov);
   void set_T_LI_cov(const V3D &T_LI_cov);
   void set_gyr_cov(const V3D &scaler);
@@ -75,8 +82,8 @@ class ImuProcess
   void propagation_and_undist(const MeasureGroup &meas, StatesGroup &state_inout, PointCloudXYZI &pcl_in_out);
   void Forward_propagation_without_imu(const MeasureGroup &meas, StatesGroup &state_inout, PointCloudXYZI &pcl_out);
   PointCloudXYZI::Ptr cur_pcl_un_;
-  sensor_msgs::ImuConstPtr last_imu_;
-  deque<sensor_msgs::ImuConstPtr> v_imu_;
+  sensor_msgs::msg::Imu::SharedPtr last_imu_;
+  deque<sensor_msgs::msg::Imu::SharedPtr> v_imu_;
   vector<Pose6D> IMUpose;
   V3D mean_acc;
   V3D mean_gyr;
@@ -103,7 +110,7 @@ ImuProcess::ImuProcess()
   mean_acc        = V3D(0, 0, -1.0);
   mean_gyr        = V3D(0, 0, 0);
   angvel_last     = Zero3d;
-  last_imu_.reset(new sensor_msgs::Imu());
+  last_imu_.reset(new sensor_msgs::msg::Imu());
   fout_imu.open(DEBUG_FILE_DIR("imu.txt"),ios::out);
 }
 
@@ -111,7 +118,11 @@ ImuProcess::~ImuProcess() {}
 
 void ImuProcess::Reset() 
 {
-  ROS_WARN("Reset ImuProcess");
+  // ROS_WARN("Reset ImuProcess");
+  std::cout << "Reset ImuProcess" << std::endl;
+  // LOG_WARN("Reset ImuProcess");
+  // RCLCPP_WARN(this->get_logger(), "Reset ImuProcess");
+
   mean_acc      = V3D(0, 0, -1.0);
   mean_gyr      = V3D(0, 0, 0);
   angvel_last       = Zero3d;
@@ -119,7 +130,7 @@ void ImuProcess::Reset()
   init_iter_num     = 1;
   v_imu_.clear();
   IMUpose.clear();
-  last_imu_.reset(new sensor_msgs::Imu());
+  last_imu_.reset(new sensor_msgs::msg::Imu());
   cur_pcl_un_.reset(new PointCloudXYZI());
 }
 
@@ -162,7 +173,9 @@ void ImuProcess::IMU_init(const MeasureGroup &meas, StatesGroup &state_inout, in
 {
   /** 1. initializing the gravity, gyro bias, acc and gyro covariance
    ** 2. normalize the acceleration measurements to unit gravity **/
-  ROS_INFO("IMU Initializing: %.1f %%", double(N) / MAX_INI_COUNT * 100);
+  // ROS_INFO("IMU Initializing: %.1f %%", double(N) / MAX_INI_COUNT * 100);
+  // LOG_INFO("IMU Initializing: %.1f %%", double(N) / MAX_INI_COUNT * 100);
+  std::cout << "IMU Initializing: " << double(N) / MAX_INI_COUNT * 100 << "%" << std::endl;
   V3D cur_acc, cur_gyr;
   
   if (b_first_frame_)
@@ -196,7 +209,9 @@ void ImuProcess::IMU_init(const MeasureGroup &meas, StatesGroup &state_inout, in
   state_inout.gravity = - mean_acc / mean_acc.norm() * G_m_s2;
   state_inout.rot_end = Eye3d;
   state_inout.bias_g.setZero();
-  last_imu_ = meas.imu.back();
+  // last_imu_ = meas.imu.back();
+  last_imu_ = std::make_shared<sensor_msgs::msg::Imu>(*meas.imu.back());
+
 }
 
 
@@ -272,7 +287,7 @@ void ImuProcess::propagation_and_undist(const MeasureGroup &meas, StatesGroup &s
   pcl_out = *(meas.lidar);
   auto v_imu = meas.imu;
   v_imu.push_front(last_imu_);
-  double imu_end_time = v_imu.back()->header.stamp.toSec();
+  double imu_end_time = v_imu.back()->header.stamp.sec + v_imu.back()->header.stamp.nanosec / 1e9;
   double pcl_beg_time, pcl_end_time;
 
   if (lidar_type == L515)
@@ -304,7 +319,8 @@ void ImuProcess::propagation_and_undist(const MeasureGroup &meas, StatesGroup &s
     auto &&head = *(it_imu);
     auto &&tail = *(it_imu + 1);
 
-    if (tail->header.stamp.toSec() < last_lidar_end_time_)    continue;
+    // if (tail->header.stamp.toSec() < last_lidar_end_time_)    continue;
+    if (tail->header.stamp.sec + tail->header.stamp.nanosec / 1e9 < last_lidar_end_time_)    continue;
     
     angvel_avr<<0.5 * (head->angular_velocity.x + tail->angular_velocity.x),
                 0.5 * (head->angular_velocity.y + tail->angular_velocity.y),
@@ -317,15 +333,19 @@ void ImuProcess::propagation_and_undist(const MeasureGroup &meas, StatesGroup &s
 
       V3D angvel_now(head->angular_velocity.x, head->angular_velocity.y, head->angular_velocity.z);
       V3D acc_now(head->linear_acceleration.x, head->linear_acceleration.y, head->linear_acceleration.z);
-      fout_imu << setw(10) << head->header.stamp.toSec() << "  " << angvel_now.transpose()<< " " << acc_now.transpose() << endl;
+      // fout_imu << setw(10) << head->header.stamp.toSec() << "  " << angvel_now.transpose()<< " " << acc_now.transpose() << endl;
+      fout_imu << setw(10) << head->header.stamp.sec + head->header.stamp.nanosec / 1e9 << "  " << angvel_now.transpose()<< " " << acc_now.transpose() << endl;
 
     angvel_avr -= state_inout.bias_g;
     acc_avr     = acc_avr / IMU_mean_acc_norm * G_m_s2 - state_inout.bias_a;
 
-    if(head->header.stamp.toSec() < last_lidar_end_time_)
-        dt = tail->header.stamp.toSec() - last_lidar_end_time_;
+    // if(head->header.stamp.toSec() < last_lidar_end_time_)
+    if(head->header.stamp.sec + head->header.stamp.nanosec / 1e9 < last_lidar_end_time_)
+        // dt = tail->header.stamp.toSec() - last_lidar_end_time_;
+        dt = tail->header.stamp.sec + tail->header.stamp.nanosec / 1e9 - last_lidar_end_time_;
     else
-        dt = tail->header.stamp.toSec() - head->header.stamp.toSec();
+        // dt = tail->header.stamp.toSec() - head->header.stamp.toSec();
+        dt = tail->header.stamp.sec + tail->header.stamp.nanosec / 1e9 - head->header.stamp.sec + head->header.stamp.nanosec / 1e9;
     
     /* covariance propagation */
     M3D acc_avr_skew;
@@ -366,7 +386,8 @@ void ImuProcess::propagation_and_undist(const MeasureGroup &meas, StatesGroup &s
     /* save the poses at each IMU measurements (global frame)*/
     angvel_last = angvel_avr;
     acc_s_last  = acc_imu;
-    double &&offs_t = tail->header.stamp.toSec() - pcl_beg_time;
+    // double &&offs_t = tail->header.stamp.toSec() - pcl_beg_time;
+    double &&offs_t = tail->header.stamp.sec + tail->header.stamp.nanosec / 1e9 - pcl_beg_time;
     IMUpose.push_back(set_pose6d(offs_t, acc_imu, angvel_avr, vel_imu, pos_imu, R_imu));
   }
 
@@ -377,8 +398,8 @@ void ImuProcess::propagation_and_undist(const MeasureGroup &meas, StatesGroup &s
   state_inout.rot_end = R_imu * Exp(V3D(note * angvel_avr), dt);
   state_inout.pos_end = pos_imu + note * vel_imu * dt + note * 0.5 * acc_imu * dt * dt;
 
-
-  last_imu_ = meas.imu.back();
+  // last_imu_ = meas.imu.back();
+  last_imu_ = std::make_shared<sensor_msgs::msg::Imu>(*meas.imu.back());
   last_lidar_end_time_ = pcl_end_time;
 
   if (lidar_type != L515)
@@ -421,7 +442,10 @@ void ImuProcess::Process(const MeasureGroup &meas, StatesGroup &stat, PointCloud
   if (imu_en)
   {
     if(meas.imu.empty())  return;
-    ROS_ASSERT(meas.lidar != nullptr);
+    // ROS_ASSERT(meas.lidar != nullptr);
+    // LOG_ASSERT(meas.lidar != nullptr);
+    std::cout << "IMU Processing" << std::endl;
+
 
     if (imu_need_init_)
     {
@@ -429,7 +453,8 @@ void ImuProcess::Process(const MeasureGroup &meas, StatesGroup &stat, PointCloud
             /// The very first lidar frame
             IMU_init(meas, stat, init_iter_num);
             imu_need_init_ = true;
-            last_imu_   = meas.imu.back();
+            // last_imu_   = meas.imu.back();
+            last_imu_ = std::make_shared<sensor_msgs::msg::Imu>(*meas.imu.back());
             if (init_iter_num > MAX_INI_COUNT)
             {
                 cov_acc *= pow(G_m_s2 / mean_acc.norm(), 2);
@@ -438,14 +463,17 @@ void ImuProcess::Process(const MeasureGroup &meas, StatesGroup &stat, PointCloud
                 cov_acc = cov_acc_scale;
                 cov_gyr = cov_gyr_scale;
 
-                ROS_INFO("IMU Initialization Done: Gravity: %.4f %.4f %.4f, Acc norm: %.4f", stat.gravity[0], stat.gravity[1], stat.gravity[2], mean_acc.norm());
+                // ROS_INFO("IMU Initialization Done: Gravity: %.4f %.4f %.4f, Acc norm: %.4f", stat.gravity[0], stat.gravity[1], stat.gravity[2], mean_acc.norm());
+                // LOG_INFO("IMU Initialization Done: Gravity: %.4f %.4f %.4f, Acc norm: %.4f", stat.gravity[0], stat.gravity[1], stat.gravity[2], mean_acc.norm());
+                std::cout << "IMU Initialization Done: Gravity: " << stat.gravity[0] << " " << stat.gravity[1] << " " << stat.gravity[2] << ", Acc norm: " << mean_acc.norm() << std::endl;
                 IMU_mean_acc_norm = mean_acc.norm();
             }
         }
         else{
             cout << endl;
             printf(BOLDMAGENTA "[Refinement] Switch to LIO mode, online refinement begins.\n\n" RESET);
-            last_imu_   = meas.imu.back();
+            // last_imu_   = meas.imu.back();
+            last_imu_ = std::make_shared<sensor_msgs::msg::Imu>(*meas.imu.back());
             imu_need_init_ = false;
             cov_acc = cov_acc_scale;
             cov_gyr = cov_gyr_scale;

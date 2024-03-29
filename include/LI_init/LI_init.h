@@ -9,16 +9,16 @@
 #include <so3_math.h>
 #include <Eigen/Eigen>
 #include <condition_variable>
-#include <eigen_conversions/eigen_msg.h>
+// #include <eigen_conversions/eigen_msg.h>
 #include <common_lib.h>
 #include <algorithm>
 #include <ceres/ceres.h>
 #include <sys/time.h>
-#include "matplotlibcpp.h"
+// #include "matplotlibcpp.h"
 
 #define FILE_DIR(name)     (string(string(ROOT_DIR) + "Log/"+ name))
 
-namespace plt = matplotlibcpp;
+// namespace plt = matplotlibcpp;
 using namespace std;
 using namespace Eigen;
 
@@ -226,7 +226,7 @@ public:
 
     void plot_result();
 
-    void push_ALL_IMU_CalibState(const sensor_msgs::Imu::ConstPtr &msg, const double &mean_acc_norm);
+    void push_ALL_IMU_CalibState(const sensor_msgs::msg::Imu::ConstPtr &msg, const double &mean_acc_norm);
 
     void push_IMU_CalibState(const V3D &omg, const V3D &acc, const double &timestamp);
 

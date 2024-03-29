@@ -3,14 +3,19 @@
 
 #include <so3_math.h>
 #include <Eigen/Eigen>
+#include <deque>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-#include <lidar_imu_init/States.h>
-#include <lidar_imu_init/Pose6D.h>
-#include <sensor_msgs/Imu.h>
-#include <nav_msgs/Odometry.h>
-#include <tf/transform_broadcaster.h>
-#include <eigen_conversions/eigen_msg.h>
+#include <lidar_imu_init/msg/states.hpp> //lidar_imu_init/msg/States
+#include <lidar_imu_init/msg/pose6_d.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+// #include <tf2/transform_broadcaster.h>
+
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_ros/transform_listener.h>
+
+// #include <eigen_conversions/eigen_msg.h>
 #include <color.h>
 #include <scope_timer.hpp>
 
@@ -33,7 +38,7 @@ using namespace Eigen;
 #define DEBUG_FILE_DIR(name)     (string(string(ROOT_DIR) + "Log/"+ name))
 #define RESULT_FILE_DIR(name)    (string(string(ROOT_DIR) + "result/"+ name))
 
-typedef lidar_imu_init::Pose6D     Pose6D;
+typedef lidar_imu_init::msg::Pose6D     Pose6D;
 typedef pcl::PointXYZINormal PointType;
 typedef pcl::PointXYZRGB     PointTypeRGB;
 typedef pcl::PointCloud<PointType>    PointCloudXYZI;
@@ -62,7 +67,7 @@ struct MeasureGroup     // Lidar data and imu dates for the curent process
     };
     double lidar_beg_time;
     PointCloudXYZI::Ptr lidar;
-    deque<sensor_msgs::Imu::ConstPtr> imu;
+    deque<sensor_msgs::msg::Imu::ConstPtr> imu;
 };
 
 struct StatesGroup
