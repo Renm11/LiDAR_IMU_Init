@@ -478,6 +478,7 @@ bool sync_packages(MeasureGroup &meas)
 {
     if (lidar_buffer.empty() || imu_buffer.empty())
     {
+        LOG(INFO) << "Lidar or IMU buffer is empty!\n";
         return false;
     }
 
@@ -505,8 +506,12 @@ bool sync_packages(MeasureGroup &meas)
         lidar_pushed = true;
     }
 
-    if (last_timestamp_imu < lidar_end_time)
+    if (last_timestamp_imu < lidar_end_time){
+        LOG(INFO) << "IMU data is too old!\n";
+        // 输出他们的时间戳
+        LOG(INFO) << "IMU time: " << last_timestamp_imu << " LiDAR time: " << lidar_end_time;
         return false;
+    }
 
     /** push imu data, and pop from imu buffer **/
     double imu_time = imu_buffer.front()->header.stamp.sec + imu_buffer.front()->header.stamp.nanosec / double(1e9);
@@ -522,6 +527,7 @@ bool sync_packages(MeasureGroup &meas)
     lidar_buffer.pop_front();
     time_buffer.pop_front();
     lidar_pushed = false;
+    LOG(INFO) << "Synced a pair of LiDAR and IMU data!\n";
     return true;
 }
 
@@ -847,8 +853,8 @@ void printProgress(double percentage)
 
 void init_param()
 {
-    // auto yaml = YAML::LoadFile("/path/to/params.yaml");
-    auto yaml = YAML::LoadFile("/home/mw/work/LiDAR_IMU_Init/config/robosense.yaml");
+    // auto yaml = YAML::LoadFile("/home/mw/work/LiDAR_IMU_Init/config/robosense.yaml");
+    auto yaml = YAML::LoadFile("/home/mw/work/LiDAR_IMU_Init/config/velodyne.yaml");
     NUM_MAX_ITERATIONS = yaml["max_iteration"] ? yaml["max_iteration"].as<int>() : 4;
     p_pre->point_filter_num = yaml["point_filter_num"] ? yaml["point_filter_num"].as<int>() : 2;
     map_file_path = yaml["map_file_path"] ? yaml["map_file_path"].as<string>() : "";
@@ -907,7 +913,7 @@ private:
     // 新建一个线程，用于处理数据
     void process_thread()
     {
-        LOG(INFO) << "Initialization finished.";
+        LOG(INFO) << "Begin process thread";
 
         path.header.frame_id = "camera_init";
         path.header.stamp.sec = 0;
@@ -965,6 +971,8 @@ private:
             cout << "~~~~" << ROOT_DIR << " file opened" << endl;
         else
             cout << "~~~~" << ROOT_DIR << " doesn't exist" << endl;
+        
+        LOG(INFO) << "Begin process thread11111";
 
         //------------------------------------------------------------------------------------------------------
         signal(SIGINT, SigHandle);
@@ -978,9 +986,10 @@ private:
         {
             if (flg_exit)
                 break;
-            // ros::spinOnce();
+
             if (sync_packages(Measures))
             {
+                LOG(INFO) << "Begin process thread3333";
                 if (flg_reset)
                 {
                     // ROS_WARN("reset when rosbag play back.");

@@ -306,7 +306,7 @@ Preprocess::process_cut_frame_pcl2(const sensor_msgs::msg::PointCloud2::ConstPtr
 
     //ms
     // double last_frame_end_time = msg->header.stamp.toSec() * 1000;
-    double last_frame_end_time = msg->header.stamp.sec + msg->header.stamp.nanosec/1e9 * 1000;
+    double last_frame_end_time = (msg->header.stamp.sec + msg->header.stamp.nanosec/1e9) * 1000;
 
     uint valid_num = 0;
     uint cut_num = 0;
